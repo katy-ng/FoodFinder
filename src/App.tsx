@@ -71,6 +71,7 @@ function AppShell() {
       </a>
       <header className="app-header">
         <div className="app-header__inner">
+          <img src="/wolfie-food-finder.png" alt="" className="logo" />
           <h1 className="brand">SBU FoodFinder</h1>
         </div>
       </header>

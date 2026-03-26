@@ -1,17 +1,18 @@
 @import 'leaflet/dist/leaflet.css';
+@import url('https://fonts.googleapis.com');
 
 :root {
   color-scheme: dark;
-  --bg: #121212;
-  --surface: #1e1e1e;
-  --surface-2: #2a2a2a;
-  --border: #444;
+  --bg: #990000;
+  --surface: #6B000D;
+  --surface-2: #002244;
+  --border: #6B000D;
   --text: #eee;
   --muted: #aaa;
   --accent: #c62828;
-  --focus: #fff;
+  --focus: #ffffff;
   --radius: 6px;
-  --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font: 'Alumni Sans', sans-serif;
 }
 
 *,
@@ -68,8 +69,14 @@ body {
 .app-header__inner {
   max-width: 720px;
   margin: 0 auto;
+  display: flex;
+  align-items: left;
+  gap: 0.5rem;
 }
-
+.logo {
+  width: 32px;
+  height: 32px;
+}
 .brand {
   margin: 0;
   font-size: 1.25rem;
