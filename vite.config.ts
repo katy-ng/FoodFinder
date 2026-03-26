@@ -11,9 +11,9 @@ export default defineConfig({
       manifest: {
         name: 'SBU FoodFinder',
         short_name: 'FoodFinder',
-        description: 'Free food and campus events at Stony Brook University',
-        theme_color: '#0f172a',
-        background_color: '#0f172a',
+        description: 'SBU free-food events',
+        theme_color: '#121212',
+        background_color: '#121212',
         display: 'standalone',
         start_url: '/',
         icons: [

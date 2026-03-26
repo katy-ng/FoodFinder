@@ -44,7 +44,7 @@ export function Catalog({ events }: Props) {
           <input
             type="search"
             className="input"
-            placeholder="Name, location, or keywords"
+            placeholder="Search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoComplete="off"
@@ -67,7 +67,7 @@ export function Catalog({ events }: Props) {
         </label>
       </div>
       <p className="panel__count" role="status" aria-live="polite">
-        Showing {filtered.length} of {events.length} free-food listings
+        {filtered.length} / {events.length}
       </p>
       <ul className="card-list">
         {filtered.map((e) => (
@@ -102,7 +102,7 @@ export function Catalog({ events }: Props) {
         ))}
       </ul>
       {filtered.length === 0 ? (
-        <p className="empty">No events match your filters. Try another category or search term.</p>
+        <p className="empty">No matches.</p>
       ) : null}
       <EventDialog event={selected} onClose={() => setSelected(null)} />
     </section>

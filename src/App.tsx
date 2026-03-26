@@ -24,7 +24,7 @@ function AppShell() {
         if (!cancelled) setData(payload);
       })
       .catch(() => {
-        if (!cancelled) setLoadError('We could not load the event list. Run npm run dev to generate events.json.');
+        if (!cancelled) setLoadError('Could not load events.json.');
       });
     return () => {
       cancelled = true;
@@ -54,7 +54,7 @@ function AppShell() {
         </header>
         <main id="main" className="app-main" tabIndex={-1}>
           <p className="muted" role="status" aria-live="polite">
-            Loading campus events…
+            Loading…
           </p>
         </main>
       </div>
@@ -71,10 +71,7 @@ function AppShell() {
       </a>
       <header className="app-header">
         <div className="app-header__inner">
-          <div>
-            <h1 className="brand">SBU FoodFinder</h1>
-            <p className="tagline">Free food · Campus life · Student orgs</p>
-          </div>
+          <h1 className="brand">SBU FoodFinder</h1>
         </div>
       </header>
 
@@ -91,9 +88,6 @@ function AppShell() {
           aria-current={tab === 'catalog' ? 'page' : undefined}
           onClick={() => setTab('catalog')}
         >
-          <span className="tab-bar__icon" aria-hidden>
-            ≡
-          </span>
           Catalog
         </button>
         <button
@@ -102,9 +96,6 @@ function AppShell() {
           aria-current={tab === 'map' ? 'page' : undefined}
           onClick={() => setTab('map')}
         >
-          <span className="tab-bar__icon" aria-hidden>
-            ◎
-          </span>
           Map
         </button>
         <button
@@ -113,9 +104,6 @@ function AppShell() {
           aria-current={tab === 'account' ? 'page' : undefined}
           onClick={() => setTab('account')}
         >
-          <span className="tab-bar__icon" aria-hidden>
-            ◉
-          </span>
           Account
         </button>
       </nav>

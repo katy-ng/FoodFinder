@@ -17,10 +17,7 @@ export function Account() {
         <div className="account-card">
           <p className="account-card__name">{user.displayName}</p>
           <p className="muted">{user.email}</p>
-          <p className="fine-print">
-            This is a demo sign-in: data stays in your browser only. For a real deployment, use University SSO or
-            verified email magic links.
-          </p>
+          <p className="fine-print">Saved in this browser only.</p>
           <button type="button" className="btn btn--secondary" onClick={() => signOut()}>
             Sign out
           </button>
@@ -44,10 +41,7 @@ export function Account() {
   return (
     <section className="panel account-panel" aria-labelledby="account-heading">
       <h2 id="account-heading">Account</h2>
-      <p className="muted">
-        Sign in with your <strong>@stonybrook.edu</strong> email to personalize FoodFinder (demo: stored locally in
-        this browser).
-      </p>
+      <p className="muted">@stonybrook.edu required.</p>
       <div className="segmented" role="tablist" aria-label="Sign in or sign up">
         <button
           type="button"
