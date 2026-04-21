@@ -36,6 +36,14 @@ function getPreviewRemainingSlices(eventId: string | number) {
   return hash % (TOTAL_PIZZA_SLICES + 1);
 }
 
+function getFoodStatusLabel(remainingSlices: number) {
+  if (remainingSlices === 0) return 'All gone';
+  if (remainingSlices <= 1) return 'Almost out';
+  if (remainingSlices <= 3) return 'Running low';
+  if (remainingSlices <= 5) return 'Going fast';
+  return 'Plenty left';
+}
+
 function createPizzaMapIcon(eventId: number) {
   const remainingSlices = getPreviewRemainingSlices(eventId);
   const slices = Array.from({ length: TOTAL_PIZZA_SLICES })
@@ -141,11 +149,30 @@ export function CampusMap({ mapEvents, mapDayLabel }: Props) {
           {mapEvents.length > 0 ? <FitBounds events={mapEvents} /> : null}
           {mapEvents.map((e) => (
             <Marker key={e.id} position={[e.latitude, e.longitude]} icon={createPizzaMapIcon(e.id)}>
+              {(() => {
+                const remainingSlices = getPreviewRemainingSlices(e.id);
+                const foodStatus = getFoodStatusLabel(remainingSlices);
+
+                return (
               <Popup>
                 <div className="map-popup">
                   <strong>{e.name}</strong>
                   <p className="map-popup__when">{formatEventRange(e.startsOn, e.endsOn)}</p>
                   <p className="map-popup__loc">{e.locationName}</p>
+                  <div className="map-popup__food">
+                    <p className="map-popup__food-status">{foodStatus}</p>
+                    <div className="chip-row map-popup__chips">
+                      {e.foodTypes.length > 0 ? (
+                        e.foodTypes.map((foodType) => (
+                          <span key={foodType} className="chip chip--sm">
+                            {foodType}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="map-popup__no-food">No food type listed</span>
+                      )}
+                    </div>
+                  </div>
                   <button
                     type="button"
                     className="linkish"
@@ -158,6 +185,8 @@ export function CampusMap({ mapEvents, mapDayLabel }: Props) {
                   </button>
                 </div>
               </Popup>
+                );
+              })()}
             </Marker>
           ))}
         </MapContainer>

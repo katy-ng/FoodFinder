@@ -412,6 +412,28 @@ body {
   font-size: 0.85rem;
 }
 
+.map-popup__food {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(47, 36, 84, 0.12);
+}
+
+.map-popup__food-status {
+  margin: 0 0 0.25rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #4e38a1;
+}
+
+.map-popup__chips {
+  margin-top: 0.15rem;
+}
+
+.map-popup__no-food {
+  font-size: 0.76rem;
+  color: #5f537d;
+}
+
 .map-popup__when,
 .map-popup__loc {
   margin: 0.2rem 0 0;
