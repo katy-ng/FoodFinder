@@ -35,7 +35,7 @@ function AppShell() {
     return (
       <div className="app">
         <header className="app-header">
-          <h1 className="brand">SBU FoodFinder</h1>
+          <h1 className="brand">esca</h1>
         </header>
         <main id="main" className="app-main" tabIndex={-1}>
           <p className="empty" role="alert">
@@ -50,7 +50,7 @@ function AppShell() {
     return (
       <div className="app">
         <header className="app-header">
-          <h1 className="brand">SBU FoodFinder</h1>
+          <h1 className="brand">esca</h1>
         </header>
         <main id="main" className="app-main" tabIndex={-1}>
           <p className="muted" role="status" aria-live="polite">
@@ -71,8 +71,8 @@ function AppShell() {
       </a>
       <header className="app-header">
         <div className="app-header__inner">
-          <img src="/wolfie-food-finder.png" alt="" className="logo" />
-          <h1 className="brand">SBU FoodFinder</h1>
+          <img src="/ESCA.png" alt="" className="logo" />
+          <h1 className="brand">esca</h1>
         </div>
       </header>
 

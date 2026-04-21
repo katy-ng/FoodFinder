@@ -138,7 +138,7 @@ function coordsForEvent(e, csv) {
   return { lat, lng, approximate: false };
 }
 
-const jsonPath = join(root, 'fall2025_events_filtered.json');
+const jsonPath = join(root, 'fall2025_events_filtered_plus.json');
 const csvPath = join(root, 'fall2025_events_filtered_unnested.csv');
 const outDir = join(root, 'public');
 const outFile = join(outDir, 'events.json');
@@ -158,6 +158,8 @@ const normalized = freeFood.map((e) => {
   const { lat, lng, approximate } = coordsForEvent(e, csv);
   const startKey = nyYmd(e.startsOn);
 
+  const foodTypes = Array.isArray(e.foodTypes) ? e.foodTypes : [];
+
   return {
     id: e.id,
     name: e.name,
@@ -166,6 +168,7 @@ const normalized = freeFood.map((e) => {
     startsOn: e.startsOn,
     endsOn: e.endsOn,
     categories: cats,
+    foodTypes: foodTypes,
     theme: e.theme || 'General',
     organization: orgSummary(e),
     locationName: addr.name || 'Location on campus',

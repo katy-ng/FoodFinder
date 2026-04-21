@@ -7,6 +7,45 @@ interface Props {
   events: FoodEvent[];
 }
 
+const TOTAL_PIZZA_SLICES = 8;
+const PIZZA_CENTER = 50;
+const PIZZA_RADIUS = 44;
+
+function toPolarPoint(angleDeg: number, radius: number) {
+  const angleRad = (Math.PI / 180) * angleDeg;
+  return {
+    x: PIZZA_CENTER + radius * Math.cos(angleRad),
+    y: PIZZA_CENTER + radius * Math.sin(angleRad),
+  };
+}
+
+function buildSlicePath(sliceIndex: number) {
+  const step = 360 / TOTAL_PIZZA_SLICES;
+  const startAngle = -90 + sliceIndex * step;
+  const endAngle = startAngle + step;
+  const start = toPolarPoint(startAngle, PIZZA_RADIUS);
+  const end = toPolarPoint(endAngle, PIZZA_RADIUS);
+
+  return `M ${PIZZA_CENTER} ${PIZZA_CENTER} L ${start.x} ${start.y} A ${PIZZA_RADIUS} ${PIZZA_RADIUS} 0 0 1 ${end.x} ${end.y} Z`;
+}
+
+function getPreviewRemainingSlices(eventId: string | number) {
+  const seed = String(eventId);
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  return hash % (TOTAL_PIZZA_SLICES + 1);
+}
+
+function getFoodStatusLabel(remainingSlices: number) {
+  if (remainingSlices === 0) return 'All gone';
+  if (remainingSlices <= 1) return 'Almost out';
+  if (remainingSlices <= 3) return 'Running low';
+  if (remainingSlices <= 5) return 'Going fast';
+  return 'Plenty left';
+}
+
 export function Catalog({ events }: Props) {
   const [category, setCategory] = useState<string>('all');
   const [query, setQuery] = useState('');
@@ -70,36 +109,60 @@ export function Catalog({ events }: Props) {
         {filtered.length} / {events.length}
       </p>
       <ul className="card-list">
-        {filtered.map((e) => (
-          <li key={e.id}>
-            <article className="card">
-              <button
-                type="button"
-                className="card__main"
-                onClick={() => setSelected(e)}
-                aria-label={`${e.name}, ${formatEventRange(e.startsOn, e.endsOn)}, ${e.locationName}. View details.`}
-              >
-                {e.imageUrl ? (
-                  <img className="card__thumb" src={e.imageUrl} alt="" loading="lazy" decoding="async" />
-                ) : (
-                  <div className="card__thumb card__thumb--placeholder" aria-hidden />
-                )}
+        {filtered.map((e) => {
+          const remainingSlices = getPreviewRemainingSlices(e.id);
+          const foodStatus = getFoodStatusLabel(remainingSlices);
+
+          return (
+            <li key={e.id}>
+              <article className="card">
+                <button
+                  type="button"
+                  className="card__main"
+                  onClick={() => setSelected(e)}
+                  aria-label={`${e.name}, ${formatEventRange(e.startsOn, e.endsOn)}, ${e.locationName}, food status ${foodStatus}. View details.`}
+                >
+                  <div className="card__thumb-wrap">
+                    <div className="card__thumb">
+                      <svg
+                        className="pizza-indicator"
+                        viewBox="0 0 100 100"
+                        role="img"
+                        aria-label={`Food remaining preview: ${remainingSlices} of ${TOTAL_PIZZA_SLICES} slices`}
+                      >
+                        <circle className="pizza-base" cx="50" cy="50" r="48" />
+                        {Array.from({ length: TOTAL_PIZZA_SLICES }).map((_, i) => (
+                          <path
+                            key={i}
+                            d={buildSlicePath(i)}
+                            className="pizza-slice"
+                            style={{ opacity: i < remainingSlices ? 1 : 0.16 }}
+                          />
+                        ))}
+                        <circle className="pizza-center" cx="50" cy="50" r="8" />
+                      </svg>
+                    </div>
+                    <p className="card__food-status" aria-hidden="true">
+                      {foodStatus}
+                    </p>
+                  </div>
                 <div className="card__body">
                   <h3 className="card__title">{e.name}</h3>
                   <p className="card__when">{formatEventRange(e.startsOn, e.endsOn)}</p>
                   <p className="card__loc">{e.locationName}</p>
                   <div className="chip-row card__chips">
-                    {e.categories.slice(0, 3).map((c) => (
+                    {e.foodTypes.slice(0, 3).map((c) => (
                       <span key={c} className="chip chip--sm">
                         {c}
                       </span>
                     ))}
                   </div>
                 </div>
-              </button>
-            </article>
-          </li>
-        ))}
+                </button>
+              </article>
+            </li>
+          );
+        })}
       </ul>
       {filtered.length === 0 ? (
         <p className="empty">No matches.</p>

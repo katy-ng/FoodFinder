@@ -9,11 +9,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'SBU FoodFinder',
-        short_name: 'FoodFinder',
-        description: 'SBU free-food events',
-        theme_color: '#121212',
-        background_color: '#121212',
+        name: 'esca',
+        short_name: 'esca',
+        description: 'esca: campus free-food events',
+        theme_color: '#2b2150',
+        background_color: '#2b2150',
         display: 'standalone',
         start_url: '/',
         icons: [

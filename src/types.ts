@@ -6,6 +6,7 @@ export interface FoodEvent {
   startsOn: string;
   endsOn: string;
   categories: string[];
+  foodTypes: string[];
   theme: string;
   organization: string;
   locationName: string;

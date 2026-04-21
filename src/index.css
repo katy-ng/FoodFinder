@@ -1,18 +1,18 @@
 @import 'leaflet/dist/leaflet.css';
-@import url('https://fonts.googleapis.com');
+@import url('https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900');
 
 :root {
-  color-scheme: dark;
-  --bg: #990000;
-  --surface: #6B000D;
-  --surface-2: #002244;
-  --border: #6B000D;
-  --text: #eee;
-  --muted: #aaa;
-  --accent: #c62828;
-  --focus: #ffffff;
+  color-scheme: light;
+  --bg: #e6dcff;
+  --surface: #ffffff;
+  --surface-2: #eee3ff;
+  --border: #baa6eb;
+  --text: #2a1a52;
+  --muted: #6f5a9c;
+  --accent: #6d43dd;
+  --focus: #432b93;
   --radius: 6px;
-  --font: 'Alumni Sans', sans-serif;
+  --font: 'SN Pro', sans-serif;
 }
 
 *,
@@ -28,7 +28,9 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
+  font-optical-sizing: auto;
   font-family: var(--font);
+  font-style: normal;
   background: var(--bg);
   color: var(--text);
   line-height: 1.45;
@@ -62,8 +64,8 @@ body {
 
 .app-header {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
+  border-bottom: 1px solid #9178e2;
+  background: #8b72db;
 }
 
 .app-header__inner {
@@ -81,6 +83,7 @@ body {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
+  color: #ffffff;
 }
 
 .app-main {
@@ -101,8 +104,8 @@ body {
   justify-content: space-around;
   gap: 0.25rem;
   padding: 0.4rem 0.5rem calc(0.4rem + env(safe-area-inset-bottom, 0px));
-  background: var(--surface);
-  border-top: 1px solid var(--border);
+  background: #8b72db;
+  border-top: 1px solid #9178e2;
   z-index: 50;
 }
 
@@ -113,7 +116,7 @@ body {
   border: none;
   border-radius: var(--radius);
   background: transparent;
-  color: var(--muted);
+  color: #eadfff;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -125,8 +128,8 @@ body {
 }
 
 .tab-bar__btn.is-active {
-  color: var(--text);
-  background: var(--surface-2);
+  color: #3f2b85;
+  background: #ffffff;
 }
 
 .panel__toolbar {
@@ -222,11 +225,51 @@ body {
   object-fit: cover;
   border-radius: var(--radius);
   flex-shrink: 0;
-  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.card__thumb--placeholder {
-  background: var(--surface-2);
+.card__thumb-wrap {
+  width: 72px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.22rem;
+}
+
+.card__food-status {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.pizza-indicator {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pizza-slice {
+  fill: #ffb347;
+  stroke: #8a4b08;
+  stroke-width: 1.4;
+  transition: opacity 0.3s ease;
+}
+
+.pizza-base {
+  fill: #88591f;
+}
+
+.pizza-center {
+  fill: #f4d7a1;
+  stroke: #8a4b08;
+  stroke-width: 1;
 }
 
 .card__body {
