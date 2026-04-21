@@ -3,21 +3,65 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import type { FoodEvent } from '../types';
 import { formatEventRange } from '../lib/dates';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { EventDialog } from './EventDialog';
 
-const DefaultIcon = L.icon({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-L.Marker.prototype.options.icon = DefaultIcon;
+const TOTAL_PIZZA_SLICES = 8;
+const PIZZA_CENTER = 50;
+const PIZZA_RADIUS = 44;
+
+function toPolarPoint(angleDeg: number, radius: number) {
+  const angleRad = (Math.PI / 180) * angleDeg;
+  return {
+    x: PIZZA_CENTER + radius * Math.cos(angleRad),
+    y: PIZZA_CENTER + radius * Math.sin(angleRad),
+  };
+}
+
+function buildSlicePath(sliceIndex: number) {
+  const step = 360 / TOTAL_PIZZA_SLICES;
+  const startAngle = -90 + sliceIndex * step;
+  const endAngle = startAngle + step;
+  const start = toPolarPoint(startAngle, PIZZA_RADIUS);
+  const end = toPolarPoint(endAngle, PIZZA_RADIUS);
+
+  return `M ${PIZZA_CENTER} ${PIZZA_CENTER} L ${start.x} ${start.y} A ${PIZZA_RADIUS} ${PIZZA_RADIUS} 0 0 1 ${end.x} ${end.y} Z`;
+}
+
+function getPreviewRemainingSlices(eventId: string | number) {
+  const seed = String(eventId);
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  return hash % (TOTAL_PIZZA_SLICES + 1);
+}
+
+function createPizzaMapIcon(eventId: number) {
+  const remainingSlices = getPreviewRemainingSlices(eventId);
+  const slices = Array.from({ length: TOTAL_PIZZA_SLICES })
+    .map((_, i) => {
+      const opacity = i < remainingSlices ? 1 : 0.16;
+      return `<path d="${buildSlicePath(i)}" class="pizza-map-slice" style="opacity:${opacity}" />`;
+    })
+    .join('');
+
+  return L.divIcon({
+    className: 'pizza-map-div-icon',
+    iconSize: [34, 44],
+    iconAnchor: [17, 42],
+    popupAnchor: [0, -34],
+    html: `
+      <div class="pizza-map-pin" aria-hidden="true">
+        <svg class="pizza-map-pin__icon" viewBox="0 0 100 100" focusable="false">
+          <circle class="pizza-map-base" cx="50" cy="50" r="48" />
+          ${slices}
+          <circle class="pizza-map-center" cx="50" cy="50" r="8" />
+        </svg>
+        <span class="pizza-map-pin__tip"></span>
+      </div>
+    `,
+  });
+}
 
 /** Main Stony Brook University campus (undergraduate core, Union, SAC, South P). WGS84 SW → NE. */
 const SBU_CAMPUS_BOUNDS = L.latLngBounds([40.896, -73.126], [40.919, -73.108]);
@@ -96,7 +140,7 @@ export function CampusMap({ mapEvents, mapDayLabel }: Props) {
           />
           {mapEvents.length > 0 ? <FitBounds events={mapEvents} /> : null}
           {mapEvents.map((e) => (
-            <Marker key={e.id} position={[e.latitude, e.longitude]}>
+            <Marker key={e.id} position={[e.latitude, e.longitude]} icon={createPizzaMapIcon(e.id)}>
               <Popup>
                 <div className="map-popup">
                   <strong>{e.name}</strong>

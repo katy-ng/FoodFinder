@@ -343,8 +343,10 @@ body {
 
 .map-wrap {
   overflow: hidden;
-  height: min(72.5dvh, 525px);
+  height: 72.5dvh;
   background: #dcdbe0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 .map-canvas {
@@ -356,6 +358,52 @@ body {
 
 .leaflet-container {
   background: #dcdbe0;
+}
+
+.leaflet-marker-icon.pizza-map-div-icon {
+  background: transparent;
+  border: 0;
+}
+
+.pizza-map-pin {
+  width: 34px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pizza-map-pin__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(40, 26, 79, 0.35);
+}
+
+.pizza-map-pin__tip {
+  margin-top: -1px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 9px solid #6d43dd;
+  filter: drop-shadow(0 1px 1px rgba(40, 26, 79, 0.35));
+}
+
+.pizza-map-base {
+  fill: #88591f;
+}
+
+.pizza-map-slice {
+  fill: #ffb347;
+  stroke: #8a4b08;
+  stroke-width: 1.4;
+}
+
+.pizza-map-center {
+  fill: #f4d7a1;
+  stroke: #8a4b08;
+  stroke-width: 1;
 }
 
 .map-popup {
